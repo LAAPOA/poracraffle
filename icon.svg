@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d81b3a"/>
+      <stop offset="1" stop-color="#a50d26"/>
+    </linearGradient>
+    <linearGradient id="drum" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#e0a92e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- floor shadow -->
+  <ellipse cx="256" cy="420" rx="150" ry="16" fill="#000" opacity=".22"/>
+  <!-- stand legs -->
+  <g stroke="#2a1a10" stroke-width="16" stroke-linecap="round">
+    <line x1="150" y1="262" x2="118" y2="414"/>
+    <line x1="150" y1="262" x2="182" y2="414"/>
+    <line x1="362" y1="262" x2="330" y2="414"/>
+    <line x1="362" y1="262" x2="394" y2="414"/>
+  </g>
+  <!-- drum body: hexagonal barrel side view -->
+  <path d="M150 262 L196 168 L316 168 L362 262 L316 356 L196 356 Z" fill="url(#drum)" stroke="#2a1a10" stroke-width="12" stroke-linejoin="round"/>
+  <!-- slats -->
+  <g stroke="#2a1a10" stroke-width="7" opacity=".85">
+    <line x1="236" y1="168" x2="236" y2="356"/>
+    <line x1="276" y1="168" x2="276" y2="356"/>
+    <line x1="196" y1="168" x2="196" y2="356"/>
+    <line x1="316" y1="168" x2="316" y2="356"/>
+  </g>
+  <!-- tickets inside -->
+  <g stroke="#2a1a10" stroke-width="4">
+    <rect x="206" y="282" width="46" height="30" rx="3" fill="#4fb3e8" transform="rotate(-14 229 297)"/>
+    <rect x="258" y="290" width="46" height="30" rx="3" fill="#b07ce0" transform="rotate(10 281 305)"/>
+    <rect x="232" y="232" width="46" height="30" rx="3" fill="#fff" transform="rotate(-4 255 247)"/>
+  </g>
+  <!-- hatch door -->
+  <rect x="226" y="176" width="60" height="22" rx="4" fill="#fff3c4" stroke="#2a1a10" stroke-width="6"/>
+  <!-- axle + crank -->
+  <circle cx="362" cy="262" r="14" fill="#2a1a10"/>
+  <line x1="362" y1="262" x2="418" y2="214" stroke="#2a1a10" stroke-width="14" stroke-linecap="round"/>
+  <line x1="418" y1="214" x2="418" y2="180" stroke="#fff" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="150" cy="262" r="12" fill="#2a1a10"/>
+  <!-- light edge -->
+  <path d="M204 182 L304 182" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+</svg>
