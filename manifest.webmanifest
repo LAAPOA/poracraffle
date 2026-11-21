@@ -1,6 +1,6 @@
 {
-  "name": "Raffle Watch",
-  "short_name": "Raffle Watch",
+  "name": "PORAC Raffle Ticket Checker",
+  "short_name": "PORAC Raffle",
   "description": "PORAC raffle ticket lookup",
   "start_url": "/",
   "scope": "/",
