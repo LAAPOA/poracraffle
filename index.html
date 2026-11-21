@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raffle Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: quick, loud, unmistakable — read from across a room.
+IDEA: a raffle ticket stub; the display is the ticket.
+PICTURE: the ticket display + keypad, nothing else on screen.
+COLOUR and TYPE: raffle red, ink, white; Barlow Condensed numbers, Barlow labels.
+LAYOUT: single centered column, max 460px, thumb-sized keys.
+*/
+:root{color-scheme:light dark;--bg:light-dark(#f3f1ee,#121417);--ink:light-dark(#16181c,#f2f2f2);--card:light-dark(#fff,#1d2025);--key:light-dark(#fff,#262a30);--line:light-dark(#d9d5cf,#343940);--red:#c8102e;--green:#13874b;--mut:light-dark(#6b6f76,#9aa0a8)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Barlow,system-ui,sans-serif;overflow-x:clip}
+main{max-width:460px;margin:0 auto;padding:16px 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{font:700 32px/1.05 'Barlow Condensed',sans-serif;margin:0}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);font:600 15px Barlow,sans-serif;border-radius:10px;padding:0 14px;min-height:44px;cursor:pointer}
+.ticket{position:relative;background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:18px 20px;min-height:190px;display:flex;flex-direction:column;justify-content:center;text-align:center;transition:border-color .2s,background .2s}
+.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:24px;height:24px;margin-top:-12px;border-radius:50%;background:var(--bg)}
+.ticket::before{left:-13px}.ticket::after{right:-13px}
+.lab{font-size:14px;color:var(--mut)}
+.num{font:700 clamp(44px,13vw,64px)/1.05 'Barlow Condensed',sans-serif;letter-spacing:.02em;overflow-wrap:anywhere;min-height:1.05em}
+.num.empty{color:var(--line)}
+.name{font:700 clamp(34px,10vw,48px)/1.05 'Barlow Condensed',sans-serif;text-wrap:balance;margin:6px 0 2px;overflow-wrap:anywhere}
+.won{font:700 26px/1.1 'Barlow Condensed',sans-serif;color:var(--green)}
+.ticket.hit{border:3px solid var(--green);background:light-dark(#eef8f2,#12261b)}
+.ticket.hit .lab{color:var(--green);font-weight:600}
+.ticket.miss{border:3px solid var(--red);background:light-dark(#fdeef0,#2a1418)}
+.miss .name{color:var(--red)}
+.pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.pad button{min-height:68px;border-radius:12px;border:1px solid var(--line);background:var(--key);color:var(--ink);font:700 32px 'Barlow Condensed',sans-serif;cursor:pointer;touch-action:manipulation}
+.pad button:active{transform:scale(.97)}
+.pad .fn{font:600 17px Barlow,sans-serif;color:var(--mut)}
+.go{display:block;width:100%;margin-top:12px;min-height:64px;border:0;border-radius:12px;background:var(--red);color:#fff;font:700 26px 'Barlow Condensed',sans-serif;letter-spacing:.03em;cursor:pointer}
+.go:disabled{opacity:.4;cursor:default}
+.go.clear{background:var(--ink);color:var(--bg)}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.hide{display:none!important}
+#setup{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+#setup h2{font:700 24px/1.1 'Barlow Condensed',sans-serif;margin:0 0 6px}
+#setup p{margin:0 0 10px;font-size:15px;color:var(--mut)}
+code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:14px}
+textarea{width:100%;min-height:220px;font:16px/1.45 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.save{background:var(--red);color:#fff;border:0;border-radius:10px;font:600 16px Barlow,sans-serif;padding:0 18px;min-height:44px;cursor:pointer}
+#msg{font-size:14px;color:var(--mut)}
+input[type=file]{font-size:14px;max-width:100%}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Raffle Watch</h1>
+  <button class="ghost" id="tBtn" type="button">Tickets</button>
+</header>
+
+<div class="ticket" id="tk" aria-live="assertive">
+  <div class="lab" id="lab">Enter ticket number</div>
+  <div class="name hide" id="nm"></div>
+  <div class="won hide" id="won">just won!</div>
+  <div class="num empty" id="num">—</div>
+</div>
+
+<div id="keys">
+  <div class="pad" id="pad">
+    <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+    <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+    <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+    <button type="button" class="fn" data-k="C">Clear</button><button type="button" data-k="0">0</button><button type="button" class="fn" data-k="B" aria-label="Backspace">⌫</button>
+  </div>
+  <button class="go" id="go" type="button" disabled>Check ticket</button>
+</div>
+<button class="go clear hide" id="ac" type="button">All clear</button>
+
+<section id="setup" class="hide">
+  <h2>Extra tickets</h2>
+  <p>Built-in tickets are already loaded for everyone. Anything added here stays on this device only. One per line: <code>number, name</code>. Ranges work too: <code>1001-1025, Jane Doe</code>. Commas or tabs, so you can paste straight from a spreadsheet.</p>
+  <textarea id="ta" spellcheck="false"></textarea>
+  <div class="row">
+    <button class="save" id="sv" type="button">Save tickets</button>
+    <input type="file" id="file" accept=".csv,.txt,.tsv">
+    <span id="msg"></span>
+  </div>
+</section>
+</main>
+
+<script>
+{
+// Built-in tickets: everyone with the link sees these
+const BUILTIN = `0628211, Mike Dear
+0628212, Mike Dear
+0622903, Mike Dear
+0622935, Adam Dedeaux
+0622931, Adam Dedeaux
+0622936, Adam Dedeaux
+0622997, Adam Dedeaux
+0622945, Adam Dedeaux
+0628201, Alex Baez`;
+const KEY = 'raffleWatchTickets';
+const $ = id => document.getElementById(id);
+const tk=$('tk'), lab=$('lab'), nm=$('nm'), num=$('num'), go=$('go'), ac=$('ac'), keys=$('keys');
+let entry='', state='entry', exact=new Map(), ranges=[], missTimer=null;
+
+const norm = s => String(s).replace(/\D/g,'').replace(/^0+(?=\d)/,'');
+
+function parse(text){
+  exact = new Map(); ranges = []; let bad = 0, count = 0;
+  for (const raw of (BUILTIN + '\n' + text).split(/\r?\n/)) {
+    const line = raw.trim(); if (!line) continue;
+    const m = line.match(/^\s*([\d\s]+?)(?:\s*[-–]\s*([\d\s]+?))?\s*[,\t;]\s*(.+)$/);
+    if (!m) { bad++; continue; }
+    const name = m[3].replace(/^"|"$/g,'').trim();
+    const a = norm(m[1]);
+    if (m[2]) {
+      const lo = Number(a), hi = Number(norm(m[2]));
+      if (!(hi >= lo)) { bad++; continue; }
+      ranges.push([lo, hi, name]); count += hi - lo + 1;
+    } else { exact.set(a, name); count++; }
+  }
+  return {count, bad};
+}
+
+function lookup(n){
+  const k = norm(n);
+  if (exact.has(k)) return exact.get(k);
+  const v = Number(k);
+  for (const [lo,hi,name] of ranges) if (v >= lo && v <= hi) return name;
+  return null;
+}
+
+function load(){
+  let t = null;
+  try { t = localStorage.getItem(KEY); } catch(e) {}
+  $('ta').value = t ?? '';
+  const r = parse($('ta').value);
+  $('msg').textContent = `${r.count} ticket${r.count===1?'':'s'} loaded` ;
+}
+
+function showEntry(){
+  state='entry'; tk.className='ticket';
+  lab.textContent='Enter ticket number'; nm.classList.add('hide'); $('won').classList.add('hide');
+  num.classList.remove('hide');
+  num.textContent = entry || '—'; num.classList.toggle('empty', !entry);
+  go.disabled = !entry; keys.classList.remove('hide'); ac.classList.add('hide');
+}
+
+function press(k){
+  if (state==='hit') return;
+  if (state==='miss') { clearTimeout(missTimer); entry=''; }
+  if (k==='C') entry='';
+  else if (k==='B') entry=entry.slice(0,-1);
+  else if (entry.length < 12) entry += k;
+  showEntry();
+}
+
+function check(){
+  if (!entry || state!=='entry') return;
+  const name = lookup(entry);
+  if (name) {
+    state='hit'; tk.className='ticket hit';
+    lab.textContent='Ticket #'+entry;
+    $('won').classList.remove('hide');
+    nm.textContent=name; nm.classList.remove('hide');
+    num.textContent=''; num.classList.add('hide');
+    keys.classList.add('hide'); ac.classList.remove('hide'); ac.focus();
+  } else {
+    state='miss'; tk.className='ticket miss';
+    lab.textContent='Ticket #'+entry;
+    nm.textContent='No match'; nm.classList.remove('hide');
+    num.classList.add('hide');
+    missTimer = setTimeout(() => { entry=''; num.classList.remove('hide'); showEntry(); }, 2200);
+  }
+}
+
+function allClear(){ entry=''; num.classList.remove('hide'); showEntry(); go.focus(); }
+
+$('pad').addEventListener('click', e => { const b=e.target.closest('button'); if (b) press(b.dataset.k); });
+go.addEventListener('click', check);
+ac.addEventListener('click', allClear);
+document.addEventListener('keydown', e => {
+  if (e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT') return;
+  if (/^\d$/.test(e.key)) press(e.key);
+  else if (e.key==='Backspace') press('B');
+  else if (e.key==='Enter') { e.preventDefault(); state==='hit' ? allClear() : check(); }
+  else if (e.key==='Escape') state==='hit' ? allClear() : press('C');
+});
+
+$('tBtn').addEventListener('click', () => {
+  const s=$('setup'); s.classList.toggle('hide');
+  $('tBtn').textContent = s.classList.contains('hide') ? 'Tickets' : 'Done';
+  if (!s.classList.contains('hide')) s.scrollIntoView({behavior:'smooth'});
+});
+$('sv').addEventListener('click', () => {
+  const r = parse($('ta').value);
+  try { localStorage.setItem(KEY, $('ta').value); } catch(e) {}
+  $('msg').textContent = `Saved — ${r.count} ticket${r.count===1?'':'s'}` + (r.bad ? `, ${r.bad} line${r.bad===1?'':'s'} skipped` : '');
+});
+$('file').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  f.text().then(t => { $('ta').value = t; $('sv').click(); });
+});
+
+load(); showEntry();
+}
+</script>
+</body>
+</html>
