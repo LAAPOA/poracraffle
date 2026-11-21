@@ -4,43 +4,37 @@
       <stop offset="0" stop-color="#d81b3a"/>
       <stop offset="1" stop-color="#a50d26"/>
     </linearGradient>
-    <linearGradient id="drum" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffe08a"/>
-      <stop offset="1" stop-color="#e0a92e"/>
+    <linearGradient id="tk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6cc4f2"/>
+      <stop offset="1" stop-color="#3a9fd8"/>
     </linearGradient>
+    <mask id="notch">
+      <rect x="-300" y="-300" width="600" height="600" fill="#fff"/>
+      <circle cx="-210" cy="0" r="30" fill="#000"/>
+      <circle cx="210" cy="0" r="30" fill="#000"/>
+      <circle cx="70" cy="-125" r="13" fill="#000"/>
+      <circle cx="70" cy="125" r="13" fill="#000"/>
+    </mask>
   </defs>
   <rect width="512" height="512" fill="url(#bg)"/>
-  <!-- floor shadow -->
-  <ellipse cx="256" cy="420" rx="150" ry="16" fill="#000" opacity=".22"/>
-  <!-- stand legs -->
-  <g stroke="#2a1a10" stroke-width="16" stroke-linecap="round">
-    <line x1="150" y1="262" x2="118" y2="414"/>
-    <line x1="150" y1="262" x2="182" y2="414"/>
-    <line x1="362" y1="262" x2="330" y2="414"/>
-    <line x1="362" y1="262" x2="394" y2="414"/>
+  <g transform="translate(262 268) rotate(-22)">
+    <!-- shadow -->
+    <rect x="-204" y="-117" width="420" height="250" rx="16" fill="#000" opacity=".25" mask="url(#notch)" transform="translate(10 14)"/>
+    <!-- ticket -->
+    <rect x="-210" y="-125" width="420" height="250" rx="16" fill="url(#tk)" mask="url(#notch)"/>
+    <!-- perforation -->
+    <line x1="70" y1="-108" x2="70" y2="108" stroke="#1d3d55" stroke-width="7" stroke-dasharray="4 13" stroke-linecap="round" opacity=".7"/>
+    <!-- inner frame on main part -->
+    <rect x="-176" y="-92" width="220" height="184" rx="8" fill="none" stroke="#1d3d55" stroke-width="5" opacity=".55"/>
+    <!-- number bars (abstract digits) -->
+    <g fill="#13283a">
+      <rect x="-150" y="-52" width="168" height="34" rx="6"/>
+      <rect x="-150" y="0" width="120" height="16" rx="5" opacity=".55"/>
+      <rect x="-150" y="30" width="150" height="16" rx="5" opacity=".55"/>
+    </g>
+    <!-- stub star -->
+    <path d="M140 -38 L152 -8 L184 -6 L159 14 L168 46 L140 28 L112 46 L121 14 L96 -6 L128 -8 Z" fill="#fff" opacity=".95"/>
+    <!-- light edge -->
+    <line x1="-190" y1="-114" x2="40" y2="-114" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5"/>
   </g>
-  <!-- drum body: hexagonal barrel side view -->
-  <path d="M150 262 L196 168 L316 168 L362 262 L316 356 L196 356 Z" fill="url(#drum)" stroke="#2a1a10" stroke-width="12" stroke-linejoin="round"/>
-  <!-- slats -->
-  <g stroke="#2a1a10" stroke-width="7" opacity=".85">
-    <line x1="236" y1="168" x2="236" y2="356"/>
-    <line x1="276" y1="168" x2="276" y2="356"/>
-    <line x1="196" y1="168" x2="196" y2="356"/>
-    <line x1="316" y1="168" x2="316" y2="356"/>
-  </g>
-  <!-- tickets inside -->
-  <g stroke="#2a1a10" stroke-width="4">
-    <rect x="206" y="282" width="46" height="30" rx="3" fill="#4fb3e8" transform="rotate(-14 229 297)"/>
-    <rect x="258" y="290" width="46" height="30" rx="3" fill="#b07ce0" transform="rotate(10 281 305)"/>
-    <rect x="232" y="232" width="46" height="30" rx="3" fill="#fff" transform="rotate(-4 255 247)"/>
-  </g>
-  <!-- hatch door -->
-  <rect x="226" y="176" width="60" height="22" rx="4" fill="#fff3c4" stroke="#2a1a10" stroke-width="6"/>
-  <!-- axle + crank -->
-  <circle cx="362" cy="262" r="14" fill="#2a1a10"/>
-  <line x1="362" y1="262" x2="418" y2="214" stroke="#2a1a10" stroke-width="14" stroke-linecap="round"/>
-  <line x1="418" y1="214" x2="418" y2="180" stroke="#fff" stroke-width="18" stroke-linecap="round"/>
-  <circle cx="150" cy="262" r="12" fill="#2a1a10"/>
-  <!-- light edge -->
-  <path d="M204 182 L304 182" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".6"/>
 </svg>
