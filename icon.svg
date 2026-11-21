@@ -17,6 +17,7 @@
     </mask>
   </defs>
   <rect width="512" height="512" fill="url(#bg)"/>
+  <text x="36" y="100" font-family="Arial Black, 'DejaVu Sans', Arial, sans-serif" font-weight="900" font-size="74" fill="#fff" letter-spacing="2">2026</text>
   <g transform="translate(262 268) rotate(-22)">
     <!-- shadow -->
     <rect x="-204" y="-117" width="420" height="250" rx="16" fill="#000" opacity=".25" mask="url(#notch)" transform="translate(10 14)"/>
@@ -28,7 +29,7 @@
     <rect x="-176" y="-92" width="220" height="184" rx="8" fill="none" stroke="#1d3d55" stroke-width="5" opacity=".55"/>
     <!-- number bars (abstract digits) -->
     <g fill="#13283a">
-      <text x="-66" y="14" text-anchor="middle" font-family="Arial Black, 'DejaVu Sans', Arial, sans-serif" font-weight="900" font-size="62" letter-spacing="1">2026</text>
+      <text x="-66" y="14" text-anchor="middle" font-family="Arial Black, 'DejaVu Sans', Arial, sans-serif" font-weight="900" font-size="46" letter-spacing="1">PORAC</text>
       <rect x="-140" y="40" width="148" height="14" rx="5" opacity=".55"/>
     </g>
     <!-- stub star -->
