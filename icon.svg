@@ -28,9 +28,8 @@
     <rect x="-176" y="-92" width="220" height="184" rx="8" fill="none" stroke="#1d3d55" stroke-width="5" opacity=".55"/>
     <!-- number bars (abstract digits) -->
     <g fill="#13283a">
-      <rect x="-150" y="-52" width="168" height="34" rx="6"/>
-      <rect x="-150" y="0" width="120" height="16" rx="5" opacity=".55"/>
-      <rect x="-150" y="30" width="150" height="16" rx="5" opacity=".55"/>
+      <text x="-66" y="14" text-anchor="middle" font-family="Arial Black, 'DejaVu Sans', Arial, sans-serif" font-weight="900" font-size="62" letter-spacing="1">2026</text>
+      <rect x="-140" y="40" width="148" height="14" rx="5" opacity=".55"/>
     </g>
     <!-- stub star -->
     <path d="M140 -38 L152 -8 L184 -6 L159 14 L168 46 L140 28 L112 46 L121 14 L96 -6 L128 -8 Z" fill="#fff" opacity=".95"/>
