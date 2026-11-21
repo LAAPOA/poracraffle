@@ -76,7 +76,6 @@ input[type=file]{font-size:14px;max-width:100%}
     <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
     <button type="button" class="fn" data-k="C">Clear</button><button type="button" data-k="0">0</button><button type="button" class="fn" data-k="B" aria-label="Backspace">⌫</button>
   </div>
-  <button class="go" id="go" type="button" disabled>Check ticket</button>
 </div>
 <button class="go clear hide" id="ac" type="button">All clear</button>
 
@@ -106,7 +105,7 @@ const BUILTIN = `0628211, Mike Dear
 0628201, Alex Baez`;
 const KEY = 'raffleWatchTickets';
 const $ = id => document.getElementById(id);
-const tk=$('tk'), lab=$('lab'), nm=$('nm'), num=$('num'), go=$('go'), ac=$('ac'), keys=$('keys');
+const tk=$('tk'), lab=$('lab'), nm=$('nm'), num=$('num'), ac=$('ac'), keys=$('keys');
 let entry='', state='entry', exact=new Map(), ranges=[], missTimer=null;
 
 const norm = s => String(s).replace(/\D/g,'').replace(/^0+(?=\d)/,'');
@@ -149,7 +148,7 @@ function showEntry(){
   lab.textContent='Enter ticket number'; nm.classList.add('hide'); $('won').classList.add('hide');
   num.classList.remove('hide');
   num.textContent = entry || '—'; num.classList.toggle('empty', !entry);
-  go.disabled = !entry; keys.classList.remove('hide'); ac.classList.add('hide');
+  keys.classList.remove('hide'); ac.classList.add('hide');
 }
 
 function press(k){
@@ -181,10 +180,9 @@ function check(){
   }
 }
 
-function allClear(){ entry=''; num.classList.remove('hide'); showEntry(); go.focus(); }
+function allClear(){ entry=''; num.classList.remove('hide'); showEntry(); }
 
 $('pad').addEventListener('click', e => { const b=e.target.closest('button'); if (b) press(b.dataset.k); });
-go.addEventListener('click', check);
 ac.addEventListener('click', allClear);
 document.addEventListener('keydown', e => {
   if (e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT') return;
