@@ -157,8 +157,9 @@ function press(k){
   if (state==='miss') { clearTimeout(missTimer); entry=''; }
   if (k==='C') entry='';
   else if (k==='B') entry=entry.slice(0,-1);
-  else if (entry.length < 12) entry += k;
+  else if (entry.length < 7) entry += k;
   showEntry();
+  if (entry.length === 7) check();
 }
 
 function check(){
@@ -173,10 +174,10 @@ function check(){
     keys.classList.add('hide'); ac.classList.remove('hide'); ac.focus();
   } else {
     state='miss'; tk.className='ticket miss';
-    lab.textContent='Ticket #'+entry;
+    lab.textContent='Not a winner';
     nm.textContent='No match'; nm.classList.remove('hide');
-    num.classList.add('hide');
-    missTimer = setTimeout(() => { entry=''; num.classList.remove('hide'); showEntry(); }, 2200);
+    num.textContent=entry; num.classList.remove('hide','empty');
+    missTimer = setTimeout(() => { entry=''; showEntry(); }, 3000);
   }
 }
 
